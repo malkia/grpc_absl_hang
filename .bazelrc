@@ -1,0 +1,15 @@
+build --experimental_convenience_symlinks=clean
+common --enable_platform_specific_config
+
+# C++17 is required
+build:windows --host_cxxopt=/std:c++17 --cxxopt=/std:c++17
+build:macos --host_cxxopt=-std=c++17 --cxxopt=-std=c++17
+build:linux --host_cxxopt=-std=c++17 --cxxopt=-std=c++17
+
+# Place the binaries in separate folder, so we can quickly recompile with and without the fix
+build:bugfix --platform_suffix=bugfix
+build:bugfix --copt="-DGRPC_NO_ABSL_SYNC"
+build:bugfix --host_copt="-DGRPC_NO_ABSL_SYNC"
+
+# My own settings (mostly for cache), can be ignored
+try-import %workspace%/../top.bazelrc

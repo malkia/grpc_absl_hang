@@ -1,0 +1,10 @@
+cc_test(
+    name = "hang",
+    size = "enormous",
+    timeout = "eternal",
+    srcs = ["hang.cpp"],
+    deps = [
+        "@opentelemetry-cpp//exporters/otlp:otlp_grpc_log_record_exporter",
+        "@opentelemetry-cpp//exporters/otlp:otlp_grpc_metric_exporter",
+    ],
+)

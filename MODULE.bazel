@@ -1,0 +1,11 @@
+bazel_dep(name = "opentelemetry-cpp", version = "1.19.0")
+bazel_dep(name = "grpc", version = "1.71.0")
+
+# This applies the patch to gRPC
+single_version_override(
+    module_name = "grpc",
+    patch_strip = 1,
+    patches = [
+        "grpc_no_absl_sync.patch",
+    ],
+)
