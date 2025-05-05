@@ -2,10 +2,16 @@
 
 A rare hang, roughly 1 in ~3000, is observed on Windows 10 and 11 machines, where `gRPC` hangs when using the `abseil` sync primitives.
 
+##### (_Update since the first release, and some notes)_
+- _Added `test --nocache_test_results` to `.bazelrc` in order to ensure that fresh tests are running, not new ones._
+- _Also found out to have better chance of reproing, you may want to put `--jobs=N` where N is double/tripple/etc of your cpu count. Using `--jobs=200` is a safe bet to repro it!_
+- _If reproing fails, try bumping `--runs_per_test=100000`_
+- _Best if you start from clean bazel env_
+
 ## Steps to reproduce
 
 ```sh
-Q:\p\m\grpc_absl_hang>bazel test hang --runs_per_test=10000
+Q:\p\m\grpc_absl_hang>bazel test hang --runs_per_test=10000 --jobs=200
 INFO: Invocation ID: 3b8fd6ab-2657-474d-933f-3e20e374b6ce
 INFO: Analyzed target //:hang (0 packages loaded, 4 targets configured).
 [15,017 / 15,020] 3 actions running
@@ -51,7 +57,7 @@ After spending some times digging in `opentelemetry-cpp`, `gRPC` and `abseil` gi
 I've found way to disable the `abseil` primitives, which seems to fix the problem.
 
 ```sh 
-Q:\p\m\grpc_absl_hang>bazel test hang --runs_per_test=100000 --config=bugfix
+Q:\p\m\grpc_absl_hang>bazel test hang --runs_per_test=100000 --jobs=200 --config=bugfix
 ```
 
 **No hangs!**

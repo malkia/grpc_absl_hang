@@ -1,5 +1,6 @@
 build --experimental_convenience_symlinks=clean
 common --enable_platform_specific_config
+test --nocache_test_results
 
 # C++17 is required
 build:windows --host_cxxopt=/std:c++17 --cxxopt=/std:c++17
